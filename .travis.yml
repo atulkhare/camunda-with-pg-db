@@ -1,0 +1,17 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker network create camunda-db-bridge-1
+  - docker image build -t camunda-db .
+
+script:
+  - docker container run --name db-docker-1 --network camunda-db-bridge-1 -e POSTGRES_PASSWORD=docker -e POSTGRES_USER=docker -d -p 5432:5432 postgres
+  - docker container run --network camunda-db-bridge-1 --name camunda-db-container-4 -p 8080:8080 -d camunda-db
+
+after_success:
+  - docker build -t atulkhare/camunda-engine .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push atulkhare/camunda-engine
