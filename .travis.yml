@@ -12,6 +12,6 @@ script:
   - docker container run --network camunda-db-bridge-1 --name camunda-db-container-4 -p 8080:8080 -d camunda-db
 
 after_success:
-  - docker build -t atulkhare/camunda-engine .
+  - docker build -t atulkhare01/camunda-engine .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push atulkhare/camunda-engine
+  - docker push atulkhare01/camunda-engine
